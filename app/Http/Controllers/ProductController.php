@@ -24,8 +24,17 @@ class ProductController extends Controller
             abort(404, 'Product not available');
         }
 
+        // Show other products for user (using custom algorithm)
+        $recommended = Product::where('id', '!=', $product->id)
+                    ->where('status', 'active')
+                    ->where('stock_quantity', '>', 0)
+                    ->inRandomOrder()
+                    ->limit(20)
+                    ->get();
+
         return Inertia::render('Products/Show', [
-            'product' => $product
+            'product' => $product,
+            'recommended' => $recommended
         ]);
     }
 }
