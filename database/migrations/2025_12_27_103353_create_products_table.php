@@ -22,6 +22,7 @@ return new class extends Migration
             // Indexes
             $table->index(['status', 'stock_quantity']);
             $table->index('name');
+            $table->index('created_at');
         });
     }
 
