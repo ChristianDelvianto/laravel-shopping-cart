@@ -1,3 +1,30 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+    /* Chrome, Safari, Edge, Opera */
+    input[type=number]::-webkit-outer-spin-button,
+    input[type=number]::-webkit-inner-spin-button {
+        @apply m-0;
+        -webkit-appearance: none;
+    }
+
+    /* Firefox */
+    input[type=number] {
+        -moz-appearance: textfield;
+    }
+
+    .product-card {
+        @apply bg-white border p-4 relative rounded-xl;
+    }
+
+    .product-image-placeholder {
+        @apply block relative w-full;
+    }
+
+    .product-image-placeholder::after {
+        @apply bg-gray-300 block pb-[100%] rounded-sm;
+        content: '';
+    }
+}
