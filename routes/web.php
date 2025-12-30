@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
@@ -28,6 +29,13 @@ Route::middleware('auth')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::get('/products', [ProductController::class, 'index'])->name('products.index');
     Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
+});
+
+Route::middleware('auth')->group(function () {
+    Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+    Route::put('/cart/items/{product}', [CartController::class, 'upsertProductToCart']);
+    Route::patch('/cart/{cart_item}', [CartController::class, 'updateCartQuantity']);
+    Route::delete('/cart/{cart_item}/delete', [CartController::class, 'removeFromCart']);
 });
 
 require __DIR__.'/auth.php';
