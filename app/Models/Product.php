@@ -43,4 +43,19 @@ class Product extends Model
             'stock_quantity' => 'integer',
         ];
     }
+
+    public function getPriceAttribute($value)
+    {
+        return number_format($value / 100, 2);
+    }
+
+    public function carts()
+    {
+        return $this->belongsToMany(Cart::class, 'cart_items', 'product_id', 'cart_id', 'id', 'id');
+    }
+
+    public function cartItems()
+    {
+        return $this->hasMany(CartItem::class, 'product_id', 'id');
+    }
 }
