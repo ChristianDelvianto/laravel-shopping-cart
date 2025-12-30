@@ -1,8 +1,9 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import ProductCard from '@/Components/ProductCard.vue';
 import { Head, Link, usePage } from '@inertiajs/vue3';
-const { props } = usePage();
-const { current_page, data, last_page } = props.products;
+const page = usePage();
+const { current_page, data, last_page } = page.props.products;
 </script>
 
 <template>
@@ -18,22 +19,11 @@ const { current_page, data, last_page } = props.products;
                     lg:grid-cols-3
                     xl:grid-cols-5"
                 >
-                    <Link
+                    <ProductCard
                         v-for="product in data"
                         :key="product.id"
-                        :href="route('products.show', product.id)"
-                        class="product-card"
-                    >
-                        <div class="product-image-placeholder">
-
-                        </div>
-
-                        <div class="flex flex-1 flex-col gap-y-2 mt-2">
-                            <span class="font-semibold">{{ product.name }}</span>
-
-                            <span class="text-sm">${{ product.price }}</span>
-                        </div>
-                    </Link>
+                        :product="product"
+                    />
                 </div>
 
                 <div class="flex flex-col gap-4 mt-4
