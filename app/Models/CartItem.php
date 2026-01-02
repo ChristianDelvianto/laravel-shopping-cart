@@ -2,10 +2,14 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class CartItem extends Model
 {
+    /** @use HasFactory<\Database\Factories\CartItemFactory> */
+    use HasFactory;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -31,7 +35,9 @@ class CartItem extends Model
      */
     protected function casts(): array
     {
-        return [];
+        return [
+            'quantity' => 'integer',
+        ];
     }
 
     public function cart()
