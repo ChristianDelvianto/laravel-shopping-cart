@@ -27,9 +27,7 @@ class Product extends Model
      *
      * @var list<string>
      */
-    protected $hidden = [
-        'status',
-    ];
+    protected $hidden = [];
 
     /**
      * Get the attributes that should be cast.
@@ -41,7 +39,23 @@ class Product extends Model
         return [
             'price' => 'integer',
             'stock_quantity' => 'integer',
+            'version' => 'integer'
         ];
+    }
+
+    protected static function booted()
+    {
+        static::updating(function ($model) {
+            if ($model->isDirty('stock_quantity')) {
+                $oldValue = $model->getOriginal('stock_quantity');
+                $newValue = $model->stock_quantity;
+
+                // When stock available, update version
+                if ($oldValue < 1 && $newValue >= 1) {
+                    $model->version++;
+                }
+            }
+        });
     }
 
     public function getPriceAttribute($value)
@@ -57,5 +71,10 @@ class Product extends Model
     public function cartItems()
     {
         return $this->hasMany(CartItem::class, 'product_id', 'id');
+    }
+
+    public function toNotify()
+    {
+        return $this->belongsToMany(User::class, 'product_notify', 'product_id', 'user_id', 'id', 'id');
     }
 }
