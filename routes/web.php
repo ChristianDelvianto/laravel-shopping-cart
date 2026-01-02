@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
@@ -29,13 +30,16 @@ Route::middleware('auth')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::get('/products', [ProductController::class, 'index'])->name('products.index');
     Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
+    Route::patch('/products/{product}', [ProductController::class, 'update'])->middleware('role:admin');
+    Route::put('/products/{product}/notify', [ProductController::class, 'notifyStockAvailability'])->middleware('role:user');
 });
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'role:user'])->group(function () {
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+    Route::post('/cart/items/checkout', [CartController::class, 'checkoutItems']);
     Route::put('/cart/items/{product}', [CartController::class, 'upsertProductToCart']);
     Route::patch('/cart/{cart_item}', [CartController::class, 'updateCartQuantity']);
-    Route::delete('/cart/{cart_item}/delete', [CartController::class, 'removeFromCart']);
+    Route::delete('/cart/{cart_item}', [CartController::class, 'removeCartItem']);
 });
 
 require __DIR__.'/auth.php';
