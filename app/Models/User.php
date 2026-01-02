@@ -18,6 +18,7 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
+        'role',
         'name',
         'email',
         'password',
@@ -54,5 +55,10 @@ class User extends Authenticatable
     public function cartItems()
     {
         return $this->hasManyThrough(CartItem::class, Cart::class, 'user_id', 'cart_id', 'id', 'id');
+    }
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class, 'user_id', 'id');
     }
 }
