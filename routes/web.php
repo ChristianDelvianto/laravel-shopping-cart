@@ -42,4 +42,8 @@ Route::middleware(['auth', 'role:user'])->group(function () {
     Route::delete('/cart/{cart_item}', [CartController::class, 'removeCartItem']);
 });
 
+Route::middleware(['auth', 'role:user'])->group(function () {
+    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+});
+
 require __DIR__.'/auth.php';
