@@ -58,9 +58,9 @@ class Product extends Model
         });
     }
 
-    public function getPriceAttribute($value)
+    public function getPriceAttribute($value): float
     {
-        return number_format($value / 100, 2);
+        return $value / 100;
     }
 
     public function carts()
