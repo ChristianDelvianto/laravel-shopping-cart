@@ -15,18 +15,24 @@ class ProductSeeder extends Seeder
     {
         // Active products
         Product::factory()
-                ->count(20)
+                ->count(170)
                 ->create();
 
         // Low stock products
         Product::factory()
-                ->count(6)
+                ->count(20)
                 ->lowStock()
+                ->create();
+
+        // Empty stock products
+        Product::factory()
+                ->count(30)
+                ->emptyStock()
                 ->create();
 
         // Inactive products
         Product::factory()
-                ->count(4)
+                ->count(30)
                 ->inactive()
                 ->create();
     }
