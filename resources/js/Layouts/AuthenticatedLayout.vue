@@ -54,6 +54,16 @@ const showingNavigationDropdown = ref(false);
                                 class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex"
                             >
                                 <NavLink
+                                    :href="route('orders.index')"
+                                    :active="route().current('orders.index')"
+                                >
+                                    Orders
+                                </NavLink>
+                            </div>
+                            <div
+                                class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex"
+                            >
+                                <NavLink
                                     :href="route('cart.index')"
                                     :active="route().current('cart.index')"
                                 >
@@ -95,6 +105,21 @@ const showingNavigationDropdown = ref(false);
                                             :href="route('profile.edit')"
                                         >
                                             Profile
+                                        </DropdownLink>
+                                        <DropdownLink
+                                            :href="route('products.index')"
+                                        >
+                                            Products
+                                        </DropdownLink>
+                                        <DropdownLink
+                                            :href="route('orders.index')"
+                                        >
+                                            Orders
+                                        </DropdownLink>
+                                        <DropdownLink
+                                            :href="route('cart.index')"
+                                        >
+                                            Cart
                                         </DropdownLink>
                                         <DropdownLink
                                             :href="route('logout')"
