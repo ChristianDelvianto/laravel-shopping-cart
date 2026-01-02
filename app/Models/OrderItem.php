@@ -2,10 +2,14 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class OrderItem extends Model
 {
+    /** @use HasFactory<\Database\Factories\OrderItemFactory> */
+    use HasFactory;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -34,7 +38,19 @@ class OrderItem extends Model
      */
     protected function casts(): array
     {
-        return [];
+        return [
+            'quantity' => 'integer',
+        ];
+    }
+
+    public function getUnitPriceAttribute($value)
+    {
+        return $value / 100;
+    }
+
+    public function getTotalPriceAttribute($value)
+    {
+        return $value / 100;
     }
 
     public function order()
