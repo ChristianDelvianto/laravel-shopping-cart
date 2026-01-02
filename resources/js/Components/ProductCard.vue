@@ -14,7 +14,7 @@ defineProps({
         <span class="product-image-placeholder"></span>
 
         <span class="product-info">
-            <span class="block break-words whitespace-normal w-full">{{ product.name }}</span>
+            <span>{{ product.name }}</span>
 
             <span class="font-semibold text-blue-600 text-lg">${{ product.price }}</span>
         </span>
