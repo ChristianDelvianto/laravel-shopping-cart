@@ -37,6 +37,13 @@ class ProductFactory extends Factory
         ]);
     }
 
+    public function emptyStock(): static
+    {
+        return $this->state(fn () => [
+            'stock_quantity' => 0,
+        ]);
+    }
+
     /**
      * Inactive product
      */
