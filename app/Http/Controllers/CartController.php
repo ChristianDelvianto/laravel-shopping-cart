@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UpdateCartItemRequest;
+use App\Http\Requests\UpsertCartItemRequest;
 use App\Models\CartItem;
+use App\Models\Order;
 use App\Models\Product;
+use App\Services\CartService;
 use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 
@@ -14,110 +17,114 @@ class CartController extends Controller
 {
     public function index(Request $request)
     {
-        $currentUser = $request->user();
-
-        $items = $currentUser
-                ->cartItems()
+        // Get user cart items with product
+        $items = $request->user()->cartItems()
                 ->with('product')
-                ->whereHas('product', function ($query) {
-                    $query->where('status', 'active');
-                })
-                ->paginate(20);
+                ->get();
 
         return Inertia::render('Cart/Index', [
             'items' => $items
         ]);
     }
 
-    public function removeFromCart(Request $request, CartItem $cartItem)
+    /**
+     * Checkout all cart items
+     */
+    public function checkoutItems(Request $request, CartService $cartService)
     {
-        $cartItem->delete();
+        try {
+            $cartService->checkout($request->user()->id);
 
-        Inertia::flash('success', 'Product removed from cart');
+            Inertia::flash('success', 'Your order has been created');
+        } catch (Exception $e) {
+            logger()->error('Checkout failed', [
+                'error' => $e
+            ]);
+
+            return back()->withErrors([
+                'message' => 'Checkout failed. Please try again.',
+            ]);
+        }
 
         return back();
     }
 
-    public function updateCartQuantity(Request $request, CartItem $cartItem)
+    /**
+     * Remove an item from cart
+     */
+    public function removeCartItem(Request $request, CartItem $cartItem, CartService $cartService)
     {
-        $currentUser = $request->user();
+        $cartItem->load('cart');
 
-        $cartItem->load(['cart', 'product']);
-
-        if ($currentUser->id !== $cartItem->cart->user_id) {
-            abort(400, 'Sorry, this cart does not belong to you');
+        // The cart item does not belong to user
+        if ($request->user()->id !== $cartItem->cart->user_id) {
+            return back()->withErrors([
+                'message' => 'Sorry, this cart item does not belong to you'
+            ]);
         }
-
-        // 
-
-        Inertia::flash('success', 'Cart updated successfully');
-
-        return back();
-    }
-
-    public function upsertProductToCart(Request $request, Product $product)
-    {
-        abort(403, 'Product is out of stock');
-
-        $currentUser = $request->user();
-
-        // Check product status
-        if ($product->status !== 'active') {
-            abort(404, 'Product not available');
-        }
-
-        // Check product stock quantity
-        if ($product->stock_quantity < 1) {
-            abort(403, 'Product is out of stock');
-        }
-
-        $validated = $request->validate([
-            'count' => ['required', 'integer', 'min:1', "max:{$product->stock_quantity}"]
-        ]);
-
-        $cart = $currentUser->cart;
 
         try {
-            $successMessage = DB::transaction(function () use ($cart, $product, $validated): string {
-                $product = Product::where('id', $product->id)
-                            ->where('status', 'active')
-                            ->lockForUpdate()
-                            ->firstOrFail();
+            $cartService->deleteItem($cartItem);
 
-                // Validate stock quantity again
-                if ($product->stock_quantity < 1) {
-                    throw new Exception('Product is out of stock', 403);
-                }
-
-                $cartItem = $cart->items()
-                            ->where('product_id', $product->id)
-                            ->lockForUpdate()
-                            ->first();
-
-                if ($validated['count'] > $product->stock_quantity) {
-                    throw ValidationException::withMessages([
-                        'count' => 'Not enough stock available',
-                    ]);
-                }
-
-                if ($cartItem) {
-                    $cartItem->update(['quantity' => $validated['count']]);
-
-                    return 'Cart quantity updated';
-                }
-                
-                // Create new cart item
-                $cart->items()->create([
-                    'product_id' => $product->id,
-                    'quantity' => $validated['count'],
-                ]);
-
-                return 'Product added to cart';
-            });
-
-            Inertia::flash('success', $successMessage);
+            Inertia::flash('success', 'Item deleted from cart');
         } catch (Exception $e) {
+            logger()->error('Error occured when removing cart item', [
+                'error' => $e
+            ]);
+
+            return back()->withErrors([
+                'message' => 'Something went wrong, please try again'
+            ]);
+        }
+
+        return back();
+    }
+
+    /**
+     * Update cart's item quantity
+     */
+    public function updateCartQuantity(UpdateCartItemRequest $request, CartItem $cartItem, CartService $cartService)
+    {
+        $cartItem->load(['cart', 'product']);
+
+        // The cart item does not belong to user
+        if ($request->user()->id !== $cartItem->cart->user_id) {
+            return back()->withErrors(['message' => 'Sorry, this cart does not belong to you']);
+        }
+
+        try {
+            $cartService->updateQuantity($cartItem, $request->validated('count'));
+
+            Inertia::flash('success', 'Cart updated successfully');
+        } catch (ValidationException $e) {
             throw $e;
+        } catch (Exception $e) {
+            logger()->error('Failed update cart item quantity', [
+                'error' => $e
+            ]);
+
+            return back()->withErrors(['message' => 'Unable to update cart, please try again']);
+        }
+
+        return back();
+    }
+
+    /**
+     * Update or insert new product into user's cart
+     */
+    public function upsertProductToCart(UpsertCartItemRequest $request, Product $product, CartService $cartService)
+    {
+        $cart = $request->user()->cart;
+
+        try {
+            // Transaction will return success message for flash data
+            $message = $cartService->upsertItem($cart, $product, $request->validated('count'));
+
+            Inertia::flash('success', $message);
+        } catch (ValidationException $e) {
+            throw $e;
+        } catch (Exception $e) {
+            return back()->withErrors(['message' => 'Something went wrong, please try again']);
         }
 
         return back();
