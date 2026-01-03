@@ -43,16 +43,6 @@ class OrderItem extends Model
         ];
     }
 
-    public function getUnitPriceAttribute($value)
-    {
-        return $value / 100;
-    }
-
-    public function getTotalPriceAttribute($value)
-    {
-        return $value / 100;
-    }
-
     public function order()
     {
         return $this->belongsTo(Order::class, 'order_id', 'id');
