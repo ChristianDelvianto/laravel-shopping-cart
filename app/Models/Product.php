@@ -58,11 +58,6 @@ class Product extends Model
         });
     }
 
-    public function getPriceAttribute($value): float
-    {
-        return $value / 100;
-    }
-
     public function carts()
     {
         return $this->belongsToMany(Cart::class, 'cart_items', 'product_id', 'cart_id', 'id', 'id');
