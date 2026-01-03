@@ -20,6 +20,9 @@ class CartController extends Controller
         // Get user cart items with product
         $items = $request->user()->cartItems()
                 ->with('product')
+                ->whereHas('product', function ($query) {
+                    $query->where('status', 'active');
+                })
                 ->get();
 
         return Inertia::render('Cart/Index', [
