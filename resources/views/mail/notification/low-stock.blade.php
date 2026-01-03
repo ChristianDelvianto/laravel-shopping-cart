@@ -15,7 +15,11 @@
                 <!-- Other product info here -->
             </div>
 
-            Now only has {{ $quantity }} stock available.
+            @if ($quantity > 0)
+                Now only has {{ $quantity }} stock available.
+            @else
+                Now out of stock.
+            @endif
         </div>
     </body>
 </html>
