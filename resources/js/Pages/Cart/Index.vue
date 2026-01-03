@@ -1,6 +1,5 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-// import CartCheckoutModal from '@/Components/CartCheckoutModal.vue';
 import CartEditModal from '@/Components/CartEditModal.vue';
 import IconLoading from '@/svg/mdi/IconLoading.vue';
 import { Head, Link, router, usePage } from '@inertiajs/vue3';
@@ -13,24 +12,42 @@ const computedItems = computed(() => {
     if (items.value.length === 0) return [];
 
     return items.value.map(item => {
-        item.subtotal = (item.quantity * item.product.price).toFixed(2);
+        if (item.product.status === 'active') {
+            item.product.price_per_unit = (item.product.price / 100).toFixed(2);
+            item.subtotal = ((item.quantity * item.product.price) / 100).toFixed(2);
+        } else {
+            item.product.price_per_unit = 0;
+            item.subtotal = 0;
+        }
 
         return item;
     });
 })
 const subtotalAmount = computed(() => {
-    if (items.value.length === 0) return 0;
+    if (computedItems.value.length === 0) return 0;
 
-    const total = items.value.reduce((acc, val) => acc + (val.product.price * val.quantity), 0);
+    const activeProducts = computedItems.value.filter(cartItem => cartItem.product.status === 'active');
+
+    if (activeProducts.length === 0) return 0;
     
-    return total.toFixed(2);
+    const total = activeProducts.reduce((acc, val) => acc + (val.product.price * val.quantity), 0);
+    
+    return (total / 100).toFixed(2);
 });
 
 const isEditing = ref(false);
 const isLoading = ref(false);
 const editItem = ref(null);
+const successMessage = ref('');
+const errorMessage = ref('');
 
+const resetMessage = () => {
+    successMessage.value = '';
+    errorMessage.value = '';
+};
 const checkoutCart = () => {
+    resetMessage();
+
     if (isEditing.value || isLoading.value) return;
 
     isLoading.value = true;
@@ -38,9 +55,13 @@ const checkoutCart = () => {
     router.post(`/cart/items/checkout`, null, {
         onError: (err) => {
             console.error('Error checking out cart:', err);
+
+            errorMessage.value = err.message ?? 'We are sorry, something went wrong, please try again';
         },
         onSuccess: () => {
-            items.value = [];
+            items.value = items.value.filter(item => item.product.status !== 'active');
+
+            successMessage.value = 'Your order has been created';
         },
         onFinish: () => {
             isLoading.value = false;
@@ -52,6 +73,8 @@ const closeEditCartItemModal = () => {
     editItem.value = null;
 };
 const editCartItem = (item) => {
+    resetMessage();
+
     if (isEditing.value || isLoading.value) return;
 
     editItem.value = item;
@@ -62,18 +85,22 @@ const updateCartItemQuantity = (quantity) => {
 
     if (item) {
         item.quantity = quantity;
+
+        successMessage.value = 'Cart item quantity updated';
     }
 
     closeEditCartItemModal();
 };
 const removeCartItem = (cartItem) => {
+    resetMessage();
+
     if (isLoading.value) return;
 
     items.value = items.value.filter(item => item.id !== cartItem.id);
 
     router.delete(`/cart/${cartItem.id}`, {
-        onErr: (err) => {
-            
+        onError: (err) => {
+            console.error('Error occured when removing a cart item');
         }
     });
 };
@@ -85,10 +112,19 @@ const removeCartItem = (cartItem) => {
     <AuthenticatedLayout>
         <div class="py-8">
             <div
-                class="max-w-7xl mx-auto w-full
+                class="flex flex-col gap-4 max-w-7xl mx-auto w-full
                 sm:px-6
                 lg:px-8"
             >
+                <div
+                    v-if="successMessage"
+                    class="bg-green-100 border border-green-600 p-4 rounded-lg text-green-600"
+                >{{ successMessage }}</div>
+                <div
+                    v-else-if="errorMessage"
+                    class="bg-red-100 border border-red-600 p-4 rounded-lg text-red-600"
+                >{{ errorMessage }}</div>
+
                 <div
                     v-if="computedItems.length"
                     class="flex flex-col gap-4 min-w-[640px] overflow-x-auto w-full"
@@ -134,14 +170,20 @@ const removeCartItem = (cartItem) => {
                                 <td
                                     class="text-center"
                                 >
-                                    {{ item.product.stock_quantity }}
+                                    <template
+                                        v-if="item.product.status === 'active'"
+                                    >{{ item.product.stock_quantity }}</template>
+                                    <template v-else>N/A</template>
                                 </td>
 
                                 <!-- Product unit price -->
                                 <td
                                     class="text-center"
                                 >
-                                    ${{ item.product.price }}
+                                    <template
+                                        v-if="item.product.status === 'active'"
+                                    >${{ item.product.price_per_unit }}</template>
+                                    <template v-else>N/A</template>
                                 </td>
 
                                 <!-- Cart item quantity -->
@@ -155,7 +197,10 @@ const removeCartItem = (cartItem) => {
                                 <td
                                     class="text-center"
                                 >
-                                    ${{ item.subtotal }}
+                                    <template
+                                        v-if="item.product.status === 'active'"
+                                    >${{ item.subtotal }}</template>
+                                    <template v-else>N/A</template>
                                 </td>
 
                                 <!-- Actions -->
@@ -210,9 +255,14 @@ const removeCartItem = (cartItem) => {
                 </div>
                 <div
                     v-else
-                    class="flex flex-col gap-4"
+                    class="flex flex-col flex-grow flex-shrink gap-2 items-center"
                 >
-                    You don't have any products in your cart
+                    You don't have any items in your cart
+
+                    <Link
+                        :href="route('products.index')"
+                        class="text-blue-600"
+                    >Browser products</Link>
                 </div>
             </div>
         </div>
