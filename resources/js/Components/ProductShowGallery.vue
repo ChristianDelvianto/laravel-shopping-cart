@@ -26,17 +26,5 @@ const product = computed(() => page.props.product);
         <div
             class="product-image-placeholder"
         ></div>
-
-        <div
-            class="flex flex-grow flex-row flex-shrink h-full items-center overflow-x-clip"
-        >
-            <div
-                v-for="n in 10"
-                :key="n"
-                class="image-placeholder"
-            >
-                <span class="absolute bg-blue-300 flex items-center justify-center right-[5%] rounded-full size-6 text-sm text-white top-[5%] z-[2]">{{ n }}</span>
-            </div>
-        </div>
     </div>
 </template>
