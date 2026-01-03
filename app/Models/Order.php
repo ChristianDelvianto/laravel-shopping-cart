@@ -38,11 +38,6 @@ class Order extends Model
         return [];
     }
 
-    public function getSubtotalAmountAttribute($value)
-    {
-        return $value / 100;
-    }
-
     public function items()
     {
         return $this->hasMany(OrderItem::class);
