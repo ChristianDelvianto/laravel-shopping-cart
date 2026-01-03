@@ -13,8 +13,15 @@ const computedItems = computed(() => {
 
     return items.value.map(item => {
         if (item.product.status === 'active') {
-            item.product.price_per_unit = (item.product.price / 100).toFixed(2);
-            item.subtotal = ((item.quantity * item.product.price) / 100).toFixed(2);
+            item.product.price_per_unit = new Intl.NumberFormat('en-US', {
+                    style: 'currency',
+                    currency: 'USD',
+                }).format(item.product.price / 100);
+
+            item.subtotal = new Intl.NumberFormat('en-US', {
+                    style: 'currency',
+                    currency: 'USD',
+                }).format((item.quantity * item.product.price) / 100);
         } else {
             item.product.price_per_unit = 0;
             item.subtotal = 0;
@@ -32,7 +39,10 @@ const subtotalAmount = computed(() => {
     
     const total = activeProducts.reduce((acc, val) => acc + (val.product.price * val.quantity), 0);
     
-    return (total / 100).toFixed(2);
+    return new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+    }).format(total / 100);
 });
 
 const isEditing = ref(false);
@@ -182,7 +192,7 @@ const removeCartItem = (cartItem) => {
                                 >
                                     <template
                                         v-if="item.product.status === 'active'"
-                                    >${{ item.product.price_per_unit }}</template>
+                                    >{{ item.product.price_per_unit }}</template>
                                     <template v-else>N/A</template>
                                 </td>
 
@@ -199,7 +209,7 @@ const removeCartItem = (cartItem) => {
                                 >
                                     <template
                                         v-if="item.product.status === 'active'"
-                                    >${{ item.subtotal }}</template>
+                                    >{{ item.subtotal }}</template>
                                     <template v-else>N/A</template>
                                 </td>
 
@@ -233,7 +243,7 @@ const removeCartItem = (cartItem) => {
                         sm:flex-row sm:items-center sm:justify-between">
                             Total
                             
-                            <span class="font-semibold text-blue-600 text-2xl">${{ subtotalAmount }}</span>
+                            <span class="font-semibold text-blue-600 text-2xl">{{ subtotalAmount }}</span>
                         </div>
 
                          <button
