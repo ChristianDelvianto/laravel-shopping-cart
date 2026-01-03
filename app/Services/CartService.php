@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Cart;
 use App\Models\CartItem;
 use App\Models\Order;
 use App\Models\Product;
@@ -18,6 +19,9 @@ class CartService
             $cartItems = CartItem::whereHas('cart', function ($query) use ($userId) {
                             $query->where('user_id', $userId);
                         })
+                        ->whereHas('product', function ($query) {
+                            $query->where('status', 'active');
+                        })
                         ->lockForUpdate()
                         ->get();
 
@@ -27,7 +31,7 @@ class CartService
 
             $order = Order::create([
                 'user_id' => $userId,
-                'status' => 'paid', // For the sake of this simple app, we make it 'paid'
+                'status' => 'completed', // For the sake of this simple app, we make it 'completed'
                 'subtotal_amount' => 0,
             ]);
 
@@ -56,7 +60,7 @@ class CartService
                     'total_price' => $total,
                 ]);
 
-                $product->update(['stock_quantity' => $product->stock_quantity - $item->quantity,]);
+                $product->decrement('stock_quantity', $item->quantity);
 
                 // Notify low stock
                 if ($product->stock_quantity <= config('app.stock_threshold')) {
