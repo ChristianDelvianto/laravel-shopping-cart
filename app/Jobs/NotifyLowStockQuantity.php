@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Mail\LowStockNotification;
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\Mail;
@@ -29,6 +30,7 @@ class NotifyLowStockQuantity implements ShouldQueue
     {
         $admin = User::where('role', 'admin')->first();
 
-        Mail::to($admin->email)->send(new LowStockNotification($this->product, $this->quantity));
+        Mail::to($admin->email)
+        ->send(new LowStockNotification($this->product, $this->quantity));
     }
 }
