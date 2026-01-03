@@ -7,6 +7,7 @@ import { computed, ref, watch } from 'vue';
 
 const page = usePage();
 const product = computed(() => page.props.product);
+const productPrice = computed(() => (page.props.product.price / 100).toFixed(2));
 const cartItem = computed(() => product.value?.cart_items?.[0] ?? null);
 const toNotify = computed(() => product.value?.to_notify?.[0] ?? null);
 
@@ -141,7 +142,7 @@ const upsertProductToCart = () => {
         <!-- Product price -->
         <div
             class="font-semibold pb-2 text-3xl text-blue-600"
-        >${{ product.price }}</div>
+        >${{ productPrice }}</div>
 
         <!-- Product stock & CTAs -->
         <div
