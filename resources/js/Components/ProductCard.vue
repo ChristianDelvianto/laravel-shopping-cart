@@ -1,9 +1,12 @@
 <script setup>
 import { Link } from '@inertiajs/vue3';
+import { computed } from 'vue';
 
-defineProps({
+const props = defineProps({
     product: { type: Object, required: true }
 });
+
+const productPrice = computed(() => (props.product.price / 100).toFixed(2));
 </script>
 
 <template>
@@ -16,7 +19,7 @@ defineProps({
         <span class="product-info">
             <span>{{ product.name }}</span>
 
-            <span class="font-semibold text-blue-600 text-lg">${{ product.price }}</span>
+            <span class="font-semibold text-blue-600 text-lg">${{ productPrice }}</span>
         </span>
     </Link>
 </template>
