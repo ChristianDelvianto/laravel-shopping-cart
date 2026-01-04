@@ -12,24 +12,30 @@ const computedItems = computed(() => {
     if (items.value.length === 0) return [];
 
     return items.value.map(item => {
+        // Add formatted string
+        let formattedPricePerUnit = '$0';
+        let formattedSubtotal = '$0';
+
         if (item.product.status === 'active') {
-            item.product.price_per_unit = new Intl.NumberFormat('en-US', {
+            // Add formatted price per unit string
+            formattedPricePerUnit = new Intl.NumberFormat('en-US', {
                     style: 'currency',
                     currency: 'USD',
                 }).format(item.product.price / 100);
 
-            item.subtotal = new Intl.NumberFormat('en-US', {
+            // Add formatted subtotal price
+            formattedSubtotal = new Intl.NumberFormat('en-US', {
                     style: 'currency',
                     currency: 'USD',
                 }).format((item.quantity * item.product.price) / 100);
-        } else {
-            item.product.price_per_unit = 0;
-            item.subtotal = 0;
         }
+
+        item.formatted_price_per_unit = formattedPricePerUnit;
+        item.formatted_sub_total = formattedSubtotal;
 
         return item;
     });
-})
+});
 const subtotalAmount = computed(() => {
     if (computedItems.value.length === 0) return 0;
 
@@ -192,7 +198,7 @@ const removeCartItem = (cartItem) => {
                                 >
                                     <template
                                         v-if="item.product.status === 'active'"
-                                    >{{ item.product.price_per_unit }}</template>
+                                    >{{ item.product.formatted_price_per_unit }}</template>
                                     <template v-else>N/A</template>
                                 </td>
 
@@ -209,7 +215,7 @@ const removeCartItem = (cartItem) => {
                                 >
                                     <template
                                         v-if="item.product.status === 'active'"
-                                    >{{ item.subtotal }}</template>
+                                    >{{ item.formattedSubtotal }}</template>
                                     <template v-else>N/A</template>
                                 </td>
 
@@ -272,7 +278,7 @@ const removeCartItem = (cartItem) => {
                     <Link
                         :href="route('products.index')"
                         class="text-blue-600"
-                    >Browser products</Link>
+                    >Browse products</Link>
                 </div>
             </div>
         </div>
