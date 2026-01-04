@@ -40,7 +40,7 @@ class NotifyProductStockAvailability implements ShouldQueue
         ->chunk(40, function ($users) {
             foreach ($users as $user) {
                 Mail::to($user->email)
-                ->send(new ProductStockAvailable($this->product));
+                ->send(new ProductStockAvailable($this->product, $user->name));
             }
         });
     }

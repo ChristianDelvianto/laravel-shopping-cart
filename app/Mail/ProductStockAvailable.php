@@ -18,7 +18,8 @@ class ProductStockAvailable extends Mailable implements ShouldQueue
      * Create a new message instance.
      */
     public function __construct(
-        public Product $product
+        public Product $product,
+        public string $userName
     ) {
         //
     }
