@@ -180,10 +180,12 @@ This feature is designed not only for correctness, but to deliver measurable bus
 ### **1. Browse products**
 <img src="images/browse-product.png" width="70%" />
 
-**Potential improvements:**
-    <p>1. Browse products by categories</p>
-    <p>2. Display top products (last 3 days) using cron jobs and caching</p>
-    <p>3. Implement a recommendation algorithm based on user behavior</p>
+```md
+Potential improvements:
+    1. Browse products by categories
+    2. Display top products (last 3 days) using cron jobs and caching
+    3. Implement a recommendation algorithm based on user behavior
+```
 
 ### **2. Product detail (main)**
 <img src="images/main-product-detail.png" width="70%" />
@@ -198,27 +200,33 @@ This feature is designed not only for correctness, but to deliver measurable bus
 <img src="images/product-stock-notification-enabled.png" width="70%" />
 <p>Persistent order history derived from authoritative backend state.</p>
 
-**Potential improvements:**
-    <p>1. Add SEO-friendly slugs to product URLs (e.g. `/products/macbook-pro-m3-4`)</p>
-    <p>2. Add product variants</p>
-    <p>3. Add product galleries (support multiple images / videos)</p>
-    <p>4. Implement a sold-counter & reviews</p>
+```md
+Potential improvements:
+    1. Add SEO-friendly slugs to product URLs (e.g. `/products/macbook-pro-m3-4`)
+    2. Add product variants</p>
+    3. Add product galleries (support multiple images / videos)
+    4. Implement a sold-counter & reviews
+```
     
 ### **3. Product info & reviews**
 <img src="images/product-detail-reviews.png" width="70%" />
 
-**Potential improvements:**
-    <p>1. Create more detailed product information section</p>
-    <p>2. Allow reviews only after order completion</p>
-    <p>3. Support images/videos in reviews to increase user engagement</p>
-    <p>4. Create a dedicated product reviews page where users can view all reviews</p>
+```md
+Potential improvements:
+    1. Create more detailed product information section
+    2. Allow reviews only after order completion
+    3. Support images/videos in reviews to increase user engagement
+    4. Create a dedicated product reviews page where users can view all reviews
+```
 
 ### **4. Recommended products**
 <img src="images/recommended-products.png" width="70%" />
 
-**Potential improvements:**
-    <p>1. Implement a real recommendation algorithm</p>
-    <p>2. Track user orders, searches, and viewed products to infer interests</p>
+```md
+Potential improvements:
+    1. Implement a real recommendation algorithm
+    2. Track user orders, searches, and viewed products to infer interests
+```
 
 ### **5. Cart**
 <img src="images/cart-page.png" width="70%" />
@@ -229,9 +237,11 @@ This feature is designed not only for correctness, but to deliver measurable bus
 ### **7. Orders**
 <img src="images/orders-page.png" width="70%" />
 
+```md
 **Potential improvements:**
-    <p>1. Implement `Buy back` feature and add internal tracking / analytic to generate product interest data</p>
-    <p>2. Add `filter` so users can search their order history (i.e: `product name`, `date`)</p>
+    1. Implement `Buy back` feature and add internal tracking / analytic to generate product interest data
+    2. Add `filter` so users can search their order history (i.e: `product name`, `date`)
+```
 
 ---
 
