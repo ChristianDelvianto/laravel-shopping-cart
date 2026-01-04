@@ -9,7 +9,7 @@ const orders = page.props.orders?.data ?? [];
 const currentPage = page.props.orders?.current_page ?? 1;
 const lastPage = page.props.orders?.last_page ?? 1;
 
-const computedItems = computed(() => {
+const computedOrders = computed(() => {
     if (orders.length === 0) return [];
 
     return orders.map(order => {
@@ -56,7 +56,7 @@ const computedItems = computed(() => {
                 lg:px-8"
             >
                 <div
-                    v-for="order in computedItems"
+                    v-for="order in computedOrders"
                     :key="order.id"
                     class="flex flex-grow flex-row gap-4 justify-start w-full"
                 >
