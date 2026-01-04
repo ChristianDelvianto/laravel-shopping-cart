@@ -7,20 +7,13 @@
     </head>
     <body>
         <div>
-            Hi {{ $user->email }}
+            Hi {{ $userName }}
         </div>
 
         <div>
-            Sold products:
+            Product stock now available
 
-            @foreach ($soldProducts as $product)
-                <div>{{ $product->name }},
-                    <br />
-                    amount: {{ $product->total_quantity }}
-                    <br />
-                    total sales: {{ $product->total_sales }}
-                </div>
-            @endforeach
+            <pre>{{ $product }}</pre>
         </div>
     </body>
 </html>
