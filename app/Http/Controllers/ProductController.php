@@ -50,7 +50,8 @@ class ProductController extends Controller
         // Add $currentUser to notify when product stock available
         if ($product->toNotify->isEmpty()) {
             $product->toNotify()->attach($request->user()->id, [
-                'product_version' => $product->version
+                'product_version' => $product->version,
+                'created_at' => now()
             ]);
         }
 
