@@ -160,20 +160,20 @@ This design ensures:
 
 This feature is designed not only for correctness, but to deliver measurable business value:
 
-- **Increase user engagement**
-    Users are given a reason to return without manually checking stock.
+1. **Increase user engagement**
+    <p>Users are given a reason to return without manually checking stock.</p>
 
-- **Recover lost sales from out-of-stock events**
-    Demand is captured at the moment of intent instead of being lost to competitors.
+2. **Recover lost sales from out-of-stock events**
+    <p>Demand is captured at the moment of intent instead of being lost to competitors.</p>
 
-- **Fair notification ordering**
-    First-come-first-notified prevents abuse and improves trust.
+3. **Fair notification ordering**
+    <p>First-come-first-notified prevents abuse and improves trust.</p>
 
-- **Operational safety at scale**
-    Version-based intent prevents notifying users for irrelevant stock changes.
+4. **Operational safety at scale**
+    <p>Version-based intent prevents notifying users for irrelevant stock changes.</p>
 
-- **Reduced support and UX friction**
-    Users are proactively informed instead of requiring manual follow-ups.
+5. **Reduced support and UX friction**
+    <p>Users are proactively informed instead of requiring manual follow-ups.</p>
 
 ## Screenshots
 
