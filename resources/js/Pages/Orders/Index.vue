@@ -40,6 +40,10 @@ const computedOrders = computed(() => {
         return order;
     });
 });
+
+const buyBack = () => {
+    window.alert('The button working as expected');
+};
 </script>
 
 <template>
@@ -110,7 +114,7 @@ const computedOrders = computed(() => {
                             </div>
 
                             <button
-                                @click="{}"
+                                @click="buyBack"
                                 type="buton"
                                 class="bg-blue-600 flex-grow-0 flex-shrink-0 font-semibold px-3 py-1.5 rounded-full text-white
                                 sm:min-w-32"
