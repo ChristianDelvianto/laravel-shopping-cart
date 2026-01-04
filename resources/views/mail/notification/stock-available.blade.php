@@ -13,7 +13,11 @@
         <div>
             Product stock now available
 
-            <pre>{{ $product }}</pre>
+            <div>
+                {{ $product->name }}
+
+                <!-- Add product's URL link here so user can visit directly from email -->
+            </div>
         </div>
     </body>
 </html>
