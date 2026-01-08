@@ -1,9 +1,9 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import ProductShowGallery from './Partials/ProductShowGallery.vue';
-import ProductShowInfoDetail from './Partials/ProductShowInfoDetail.vue';
-import ProductShowMainInfo from './Partials/ProductShowMainInfo.vue';
-import ProductShowUserReviews from './Partials/ProductShowUserReviews.vue';
+import ProductShowInfo from './Partials/ProductShowInfo.vue';
+import ProductShowDetail from './Partials/ProductShowDetail.vue';
+import ProductShowReviews from './Partials/ProductShowReviews.vue';
 import ProductShowRecommended from './Partials/ProductShowRecommended.vue';
 import { Head } from '@inertiajs/vue3';
 import { useProduct } from '@/Composables/useProduct.js';
@@ -32,12 +32,12 @@ const {
                 >
                     <ProductShowGallery />
 
-                    <ProductShowMainInfo />
+                    <ProductShowDetail />
                 </div>
 
-                <ProductShowInfoDetail />
+                <ProductShowInfo />
 
-                <ProductShowUserReviews />
+                <ProductShowReviews />
 
                 <ProductShowRecommended />
             </div>
