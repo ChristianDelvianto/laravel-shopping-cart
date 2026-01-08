@@ -36,16 +36,6 @@ This design prioritizes financial correctness and predictable system behavior.
 
 ---
 
-## Checkout & Data Integrity
-
-- Checkout creates a transactional snapshot of the order and its items.
-- Product price changes after checkout do not affect historical orders.
-- Stock is validated atomically during checkout to prevent negative inventory.
-
-This design prioritizes financial correctness and predictable system behavior.
-
----
-
 ## Trade-offs & Assumptions
 
 Several deliberate trade-offs were made to keep the scope reviewable while preserving production realism:
