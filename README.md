@@ -66,7 +66,6 @@ Tests prioritize business-critical paths over exhaustive coverage.
 - Backend: Laravel
 - Frontend: Vue 3 + Inertia.js
     - Inertia is used to deliver SPA-like UX while preserving Laravel routing, authentication, and server-side control.
-    - Inertia is used to deliver SPA-like UX while preserving Laravel routing, authentication, and server-side control.
 - Authentication: Laravel Breeze (session-based)
 - Styling: Tailwind CSS
 - Database: MySQL / PostgreSQL
