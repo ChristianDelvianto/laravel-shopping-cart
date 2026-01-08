@@ -22,11 +22,7 @@ The `Order` and `OrderItem` models are structured to reflect real production sys
     - Stores product, price, and quantity at purchase time
     - Decoupled from future product price changes
 
-<<<<<<< HEAD
-This separation ensures historical order integrity.
-=======
 This separation intentionally decouples historical orders from future product changes, ensuring data integrity for reporting, refunds, and audits.
-<<<<<<< HEAD
 
 ---
 
@@ -37,9 +33,6 @@ This separation intentionally decouples historical orders from future product ch
 - Stock is validated atomically during checkout to prevent negative inventory.
 
 This design prioritizes financial correctness and predictable system behavior.
-=======
->>>>>>> bbba353 (ref(doc): rewrite 'Overview', and 'Order & OrderItem Model Structure')
->>>>>>> 0042bf0 (ref(doc): rewrite 'Overview', and 'Order & OrderItem Model Structure')
 
 ---
 
@@ -91,9 +84,6 @@ Tests prioritize business-critical paths over exhaustive coverage.
 - Scheduler: Laravel Task Scheduling (cron)
 
 The stack reflects common production Laravel deployments rather than experimental tooling.
-
-The stack reflects common production Laravel deployments rather than experimental tooling.
-
 ---
 
 ## Screenshots
@@ -171,8 +161,6 @@ npm run dev
 
 This multi-process setup mirrors real Laravel production environments where web, queue, and scheduled workers run independently.
 
-This multi-process setup mirrors real Laravel production environments where web, queue, and scheduled workers run independently.
-
 Note:
 - Make sure the Laravel server is running before accessing the app
 - Queue worker and scheduler must run in separate terminals
@@ -197,16 +185,6 @@ Note:
 
 ---
 
-## Development Notes (Remote-First)
-
-- Project is structured for independent development and async review.
-- Clear separation of concerns to support readable pull requests and distributed collaboration.
-- Documentation is written to allow reviewers to understand intent without real-time explanation.
-
----
-
 ## Final Notes
 
 This project was completed in approximately 4–5 days, including design, implementation, and refinement.
-
-UI complexity was intentionally kept minimal.
