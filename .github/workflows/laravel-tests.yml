@@ -30,9 +30,11 @@ jobs:
         run: php artisan key:generate
 
       - name: Run tests with coverage
-        run: php artisan test --coverage --min=60
+        run: php artisan test --coverage-clover=coverage.xml --min=60
 
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v5
         with:
+          files: coverage.xml
+          fail_ci_if_error: true
           token: ${{ secrets.CODECOV_TOKEN }}
