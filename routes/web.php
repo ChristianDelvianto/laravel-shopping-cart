@@ -30,7 +30,6 @@ Route::middleware('auth')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::get('/products', [ProductController::class, 'index'])->name('products.index');
     Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
-    Route::patch('/products/{product}', [ProductController::class, 'update'])->middleware('role:admin');
 });
 
 Route::middleware(['auth', 'role:user'])->group(function () {
