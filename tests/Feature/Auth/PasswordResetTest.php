@@ -14,6 +14,8 @@ class PasswordResetTest extends TestCase
 
     public function test_reset_password_link_screen_can_be_rendered(): void
     {
+        $this->withoutVite();
+
         $response = $this->get('/forgot-password');
 
         $response->assertStatus(200);
@@ -32,6 +34,8 @@ class PasswordResetTest extends TestCase
 
     public function test_reset_password_screen_can_be_rendered(): void
     {
+        $this->withoutVite();
+
         Notification::fake();
 
         $user = User::factory()->create();
