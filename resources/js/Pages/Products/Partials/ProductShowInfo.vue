@@ -4,7 +4,8 @@
         sm:px-0"
     >
         <div class="bg-white p-4 rounded-lg shadow shadow-stone-300/60">
-            <h2 class="border-b-2 border-gray-300 font-semibold mb-4 pb-2 text-xl"
+            <h2
+                class="border-b-2 border-gray-300 font-semibold mb-4 pb-2 text-xl"
             >Product info</h2>
 
             <div>
