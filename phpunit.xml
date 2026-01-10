@@ -16,6 +16,20 @@
         <include>
             <directory>app</directory>
         </include>
+
+        <exclude>
+            <!-- Laravel scaffolding -->
+            <directory>app/Http/Controllers/Auth</directory>
+
+            <!-- Framework / infrastructure noise -->
+            <directory>app/Console</directory>
+            <directory>app/Providers</directory>
+            <directory>app/Http/Requests</directory>
+            <directory>app/Mail</directory>
+
+            <!-- Optional: jobs -->
+            <directory>app/Jobs</directory>
+        </exclude>
     </source>
     <php>
         <env name="APP_ENV" value="testing"/>
