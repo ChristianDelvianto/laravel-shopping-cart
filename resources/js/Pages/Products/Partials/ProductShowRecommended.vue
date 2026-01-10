@@ -1,21 +1,17 @@
 <script setup>
 import ProductCard from '@/Components/ProductCard.vue';
-import { useProduct } from '@/Composables/useProduct.js';
 
-const {
-    recommended,
-} = useProduct();
+defineProps({
+    items: { type: Array, required: true }
+});
 </script>
 
 <template>
     <div
-        v-if="recommended.length"
         class="mt-4 px-4
         sm:px-0"
     >
-        <div
-            class="bg-white p-4 rounded-lg shadow shadow-stone-300/60"
-        >
+        <div class="bg-white p-4 rounded-lg shadow shadow-stone-300/60">
             <h2
                 class="font-semibold mb-4 text-xl"
             >Recommended products</h2>
@@ -26,9 +22,9 @@ const {
                 xl:grid-cols-5"
             >
                 <ProductCard
-                    v-for="recommendedProduct in recommended"
-                    :key="recommendedProduct.id"
-                    :product="recommendedProduct"
+                    v-for="product in $props.items"
+                    :key="product.id"
+                    :product="product"
                 />
             </div>
         </div>

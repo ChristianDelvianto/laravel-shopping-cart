@@ -1,45 +1,31 @@
 <script setup>
 import IconClose from '@/svg/mdi/IconClose.vue';
-import IconLoading from '@/svg/mdi/IconLoading.vue';
 import { router } from '@inertiajs/vue3';
 import { ref } from 'vue';
 
 const props = defineProps({
-    item: { type: Object, required: true }
+    item: { type: Object }
 });
 
-const emit = defineEmits({
-    close: () => true,
-    success: (quantity) => true
-});
+const emit = defineEmits([
+    'close',
+    'success'
+]);
 
 const errorMessage = ref('');
-const isLoading = ref(false);
 const qtyCount = ref(props.item.quantity ?? 1);
 
-const closeModal = () => {
-    if (isLoading.value) return;
-
-    emit('close');
-};
 function resetMessage () {
     errorMessage.value = '';
 };
 function updateCount (count) {
     resetMessage();
 
-    if (isLoading.value
-    || count < 1
-    || count > props.item.product.stock_quantity)
-    return;
-
-    qtyCount.value = count;
+    if (count >= 1 && count <= props.item.product.stock_quantity) {
+        qtyCount.value = count;
+    }
 };
 const updateQuantity = () => {
-    if (isLoading.value) return;
-
-    isLoading.value = true;
-
     router.put(route('cart.upsert', props.item.product.id), {
         count: qtyCount.value
     }, {
@@ -50,9 +36,6 @@ const updateQuantity = () => {
         },
         onSuccess: () => {
             emit('success', qtyCount.value);
-        },
-        onFinish: () => {
-            isLoading.value = false;
         }
     });
 };
@@ -73,8 +56,7 @@ const updateQuantity = () => {
                 >Edit cart item</span>
 
                 <button
-                    @click="closeModal"
-                    :disabled="isLoading"
+                    @click="$emit('close')"
                     type="button"
                     class="flex flex-grow-0 flex-shrink-0 items-center justify-center size-10"
                 >
@@ -105,14 +87,12 @@ const updateQuantity = () => {
                         <div class="flex flex-grow-0 flex-shrink-0 flex-row gap-4 items-center">
                             <button
                                 @click="updateCount(qtyCount - 1)"
-                                :disabled="isLoading"
                                 type="button"
                                 class="bg-white border border-stone-300 flex-grow-0 flex-shrink font-bold px-3 py-1 rounded-lg text-2xl w-1/5"
                             >-</button>
 
                             <input
                                 v-model.number="qtyCount"
-                                :disabled="isLoading"
                                 :max="props.item.stock_quantity"
                                 :min="1"
                                 type="number"
@@ -123,7 +103,6 @@ const updateQuantity = () => {
 
                             <button
                                 @click="updateCount(qtyCount + 1)"
-                                :disabled="isLoading"
                                 type="button"
                                 class="bg-white border border-stone-300 flex-grow-0 flex-shrink font-bold px-3 py-1 rounded-lg text-2xl w-1/5"
                             >+</button>
@@ -134,25 +113,17 @@ const updateQuantity = () => {
 
             <div class="flex flex-grow-0 flex-row flex-shrink-0 gap-4 items-center pb-4 px-4">
                 <button
-                    @click="closeModal"
-                    :disabled="isLoading"
+                    @click="$emit('close')"
                     type="button"
                     class="bg-stone-100 border border-stone-300 flex-grow flex-shrink rounded-full text-center py-2 w-full"
                 >Cancel</button>
 
                 <button
                     @click="updateQuantity"
-                    :disabled="isLoading"
                     type="button"
                     class="bg-blue-600 flex-grow flex-shrink rounded-full text-center text-white py-2 w-full"
                 >
-                    <IconLoading
-                        v-if="isLoading"
-                        :size="24"
-                        color="#fff"
-                        class="animate-spin mx-auto"
-                    />
-                    <template v-else>Update cart</template>
+                    Update cart
                 </button>
             </div>
         </div>

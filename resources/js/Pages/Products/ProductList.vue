@@ -2,11 +2,12 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import ProductCard from '@/Components/ProductCard.vue';
 import { Head, Link, usePage } from '@inertiajs/vue3';
+import { computed } from 'vue';
 
 const page = usePage();
-const newProducts = page.props.products?.data ?? [];
-const currentPage = page.props.products?.current_page ?? 1;
-const lastPage = page.props.products?.last_page ?? 1;
+const newProducts = computed(() => page.props.products?.data ?? []);
+const currentPage = computed(() => page.props.products?.current_page ?? 1);
+const lastPage = computed(() => page.props.products?.last_page ?? 1);
 </script>
 
 <template>
@@ -44,6 +45,7 @@ const lastPage = page.props.products?.last_page ?? 1;
                     >
                         Prev
                     </Link>
+
                     <Link
                         v-if="currentPage < lastPage"
                         :href="route('products.index', { page: currentPage + 1 })"

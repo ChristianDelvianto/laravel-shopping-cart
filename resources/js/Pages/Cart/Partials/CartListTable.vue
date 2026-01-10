@@ -1,18 +1,16 @@
 <script setup>
-import IconLoading from '@/svg/mdi/IconLoading.vue';
 import { Link } from '@inertiajs/vue3';
 
 defineProps({
     items: { type: Array, default: [] },
-    loading: { type: Boolean, default: false },
     subtotal: { type: String, default: '$0' }
 });
 
-defineEmits({
-    checkout: () => true,
-    editItem: (cartItem) => true,
-    removeItem: (cartItem) => true,
-});
+defineEmits([
+    'checkout',
+    'editItem',
+    'removeItem'
+]);
 </script>
 
 <template>
@@ -74,14 +72,12 @@ defineEmits({
                         <div class="flex flex-col gap-y-3 items-center">
                             <button
                                 @click="$emit('editItem', cartItem)"
-                                :disabled="loading"
                                 type="button"
                                 class="bg-green-100 border border-green-600 px-3 py-1.5 rounded-lg text-green-600 text-sm"
                             >Edit</button>
 
                             <button
                                 @click="$emit('removeItem', cartItem)"
-                                :disabled="loading"
                                 type="button"
                                 class="bg-red-100 border border-red-600 px-3 py-1.5 rounded-lg text-red-600 text-sm"
                             >Delete</button>
@@ -101,18 +97,11 @@ defineEmits({
 
             <button
                 @click="$emit('checkout')"
-                :disabled="loading"
                 type="button"
                 class="bg-blue-600 flex-grow-0 flex-shrink-0 font-semibold px-4 py-2 rounded-lg text-white w-full
                 sm:min-w-32 sm:mt-4 sm:w-auto"
             >
-                <IconLoading
-                    v-if="loading"
-                    :size="24"
-                    color="#fff"
-                    class="animate-spin mx-auto"
-                />
-                <template v-else>Checkout</template>
+                Checkout
             </button>
         </div>
     </div>

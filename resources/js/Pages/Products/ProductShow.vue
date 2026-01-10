@@ -9,7 +9,13 @@ import { Head } from '@inertiajs/vue3';
 import { useProduct } from '@/Composables/useProduct.js';
 
 const {
+    qtyCount,
+    message,
     product,
+    productCartItem,
+    recommended,
+    instantCheckout,
+    upsertToCart,
 } = useProduct();
 </script>
 
@@ -32,14 +38,24 @@ const {
                 >
                     <ProductShowGallery />
 
-                    <ProductShowDetail />
+                    <ProductShowDetail
+                        v-model="qtyCount"
+                        @checkout="instantCheckout"
+                        @upsert-cart-item="upsertToCart"
+                        :message="message"
+                        :product="product"
+                        :product-cart-item="productCartItem"
+                    />
                 </div>
 
                 <ProductShowInfo />
 
                 <ProductShowReviews />
 
-                <ProductShowRecommended />
+                <ProductShowRecommended
+                    v-if="recommended.length"
+                    :items="recommended"
+                />
             </div>
         </div>
     </AuthenticatedLayout>

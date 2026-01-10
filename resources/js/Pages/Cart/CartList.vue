@@ -8,7 +8,6 @@ import { useCart } from '@/Composables/useCart.js';
 const {
     message,
     isEditing,
-    isLoading,
     itemToEdit,
     formattedItems,
     subtotal,
@@ -45,7 +44,6 @@ const {
                     @edit-item="openEditModal"
                     @remove-item="removeItem"
                     :items="formattedItems"
-                    :loading="isLoading"
                     :subtotal="subtotal"
                 />
                 <div

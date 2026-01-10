@@ -3,14 +3,12 @@ import IconCheck from '@/svg/mdi/IconCheck.vue';
 import { Link } from '@inertiajs/vue3';
 
 defineProps({
-    currentPage: { type: Number, default: 1 },
-    lastPage: { type: Number, default: 1 },
-    items: { type: Array, default: [] },
+    currentPage: { type: Number, required: true },
+    lastPage: { type: Number, required: true },
+    items: { type: Array, required: true },
 });
 
-defineEmits({
-    buyBack: (orderId) => true,
-});
+defineEmits(['buyBack']);
 </script>
 
 <template>
@@ -25,7 +23,7 @@ defineEmits({
             :key="order.id"
             class="flex flex-grow flex-row gap-4 justify-start w-full"
         >
-            <!-- Order status (Pending, paid, processing, shipped, rejected, completed) -->
+            <!-- Order status (pending, paid, processing, shipped, rejected, completed) -->
             <div class="bg-green-600 flex flex-grow-0 flex-shrink-0 items-center justify-center rounded-full size-12">
                 <IconCheck
                     :size="24"
@@ -36,6 +34,7 @@ defineEmits({
             <div class="flex flex-col gap-2 justify-start w-full">
                 <div class="flex flex-col">
                     <span class="text-gray-600">{{ order.formatted_created_at }}</span>
+
                     <span>You ordered {{ order.formatted_items.length }} items</span>
                 </div>
 
@@ -47,8 +46,10 @@ defineEmits({
                     >
                         <div class="flex flex-grow flex-row flex-shrink gap-4 justify-between w-full">
                             <!-- Product image -->
-                            <div class="bg-stone-300 flex-grow-0 flex-shrink-0 relative rounded-lg size-20
-                            md:size-28">
+                            <div
+                                class="bg-stone-300 flex-grow-0 flex-shrink-0 relative rounded-lg size-20
+                                md:size-28"
+                            >
                                 <span class="absolute bg-blue-600 -bottom-1.5 flex font-bold items-center justify-center -right-1.5 rounded-full text-sm size-8">{{ orderItem.quantity }}x</span>
                             </div>
 
@@ -75,20 +76,15 @@ defineEmits({
 
                         <span class="text-blue-600 text-lg">{{ order.formatted_subtotal_amount }}</span>
                     </div>
-
-                    <button
-                        @click="$emit('buyBack', order.id)"
-                        type="buton"
-                        class="bg-blue-600 flex-grow-0 flex-shrink-0 font-semibold px-3 py-1.5 rounded-full text-white
-                        sm:min-w-32"
-                    >Buy again</button>
                 </div>
             </div>
         </div>
 
         <!-- Pagination -->
-        <div class="flex flex-col-reverse flex-grow flex-shrink gap-4 w-full
-        sm:flex-row sm:items-center sm:justify-end">
+        <div
+            class="flex flex-col-reverse flex-grow flex-shrink gap-4 w-full
+            sm:flex-row sm:items-center sm:justify-end"
+        >
             <Link
                 v-if="currentPage > 1"
                 :href="route('orders.index', { page: currentPage - 1 })"
