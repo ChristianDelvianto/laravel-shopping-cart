@@ -93,7 +93,6 @@ The stack reflects common production Laravel deployments rather than experimenta
 <p>If the product already exists in the user’s cart, a contextual UI indicator is shown with the current in-cart quantity.</p>
 
 <img src="images/product-no-stock.png" width="70%" />
-<p>When a product is out of stock, users can opt in to receive a notification once the product becomes available again.</p>
     
 ### **3. Product info & reviews**
 <img src="images/product-detail-reviews.png" width="70%" />
@@ -168,14 +167,6 @@ Note:
 - Queue driver: `database`
 - Scheduler requires a running worker
 - Mail delivery depends on the configured mail driver
-
----
-
-## Development Notes (Remote-First)
-
-- Project is structured for independent development and async review.
-- Clear separation of concerns to support readable pull requests and distributed collaboration.
-- Documentation is written to allow reviewers to understand intent without real-time explanation.
 
 ---
 
