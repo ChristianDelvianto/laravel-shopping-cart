@@ -1,10 +1,10 @@
-# Laravel Shopping Cart - Take-Home Project
+# E-commerce Shopping Cart - Take-Home Project
 
 ![PHP](https://img.shields.io/badge/PHP-8.2-blue)
 ![Laravel](https://img.shields.io/badge/Laravel-12-red)
-[![Tests](https://github.com/ChristianDelvianto/laravel-shopping-cart/actions/workflows/laravel-tests.yml/badge.svg)](https://github.com/ChristianDelvianto/laravel-shopping-cart/actions/workflows/laravel-tests.yml)
-![PHPStan](https://github.com/ChristianDelvianto/laravel-shopping-cart/actions/workflows/phpstan.yml/badge.svg)
-[![codecov](https://codecov.io/gh/ChristianDelvianto/laravel-shopping-cart/graph/badge.svg?token=3YEBEW9KBC)](https://codecov.io/gh/ChristianDelvianto/laravel-shopping-cart)
+[![Tests](https://github.com/ChristianDelvianto/ecommerce-shopping-cart/actions/workflows/laravel-tests.yml/badge.svg)](https://github.com/ChristianDelvianto/ecommerce-shopping-cart/actions/workflows/laravel-tests.yml)
+![PHPStan](https://github.com/ChristianDelvianto/ecommerce-shopping-cart/actions/workflows/phpstan.yml/badge.svg)
+[![codecov](https://codecov.io/gh/ChristianDelvianto/ecommerce-shopping-cart/graph/badge.svg?token=3YEBEW9KBC)](https://codecov.io/gh/ChristianDelvianto/ecommerce-shopping-cart)
 
 ## Overview
 
@@ -128,8 +128,8 @@ The stack reflects common production Laravel deployments rather than experimenta
 ### Setup
 
 ```bash
-git clone https://github.com/ChristianDelvianto/laravel-shopping-cart.git
-cd laravel-shopping-cart
+git clone https://github.com/ChristianDelvianto/ecommerce-shopping-cart.git
+cd ecommerce-shopping-cart
 
 cp .env.example .env
 composer install
