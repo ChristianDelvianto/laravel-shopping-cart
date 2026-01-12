@@ -30,8 +30,7 @@ class GenerateDailySalesReport extends Command
      */
     public function handle()
     {
-        // $yesterday = Carbon::now()->subDay();
-        $yesterday = Carbon::now();
+        $yesterday = Carbon::now()->startOfDay()->subDay();
 
         $grandTotal = DB::table('orders')
                     ->where('status', 'completed')
