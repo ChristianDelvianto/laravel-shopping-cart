@@ -2,18 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\UpdateCartItemRequest;
 use App\Http\Requests\UpsertCartItemRequest;
 use App\Jobs\NotifyLowStockQuantity;
 use App\Models\CartItem;
 use App\Models\Order;
 use App\Models\Product;
-use App\Services\CartService;
 use Exception;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -38,9 +35,7 @@ class CartController extends Controller
     {
         try {
             DB::transaction(function () use ($request) {
-                $cartItems = $request->user()->cartItems()
-                            ->with('product')
-                            ->get();
+                $cartItems = $request->user()->cartItems()->get();
 
                 if ($cartItems->isEmpty()) {
                     throw new Exception('No items in cart');
